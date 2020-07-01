@@ -35,12 +35,12 @@ class evpnvpws_endpoint():
         sub_ele(cfg_svc_epipe, 'shutdown').text = 'false'
         
         cfg_svc_epipe_bgp = sub_ele(cfg_svc_epipe, 'bgp')
-        cfg_svc_epipe_bgp_rd = sub_ele(cfg_svc_epipe_bgp, 'route-distinguisher')
-        sub_ele(cfg_svc_epipe_bgp_rd, 'rd').text = self.data['rd']
-
-        cfg_svc_epipe_bgp_rt= sub_ele(cfg_svc_epipe_bgp, 'route-target')
-        sub_ele(cfg_svc_epipe_bgp_rt, 'export').text = self.data['rt_export']
-        sub_ele(cfg_svc_epipe_bgp_rt, 'import').text = self.data['rt_import']
+#        cfg_svc_epipe_bgp_rd = sub_ele(cfg_svc_epipe_bgp, 'route-distinguisher')
+#        sub_ele(cfg_svc_epipe_bgp_rd, 'rd').text = self.data['rd']
+#
+#        cfg_svc_epipe_bgp_rt= sub_ele(cfg_svc_epipe_bgp, 'route-target')
+#        sub_ele(cfg_svc_epipe_bgp_rt, 'export').text = self.data['rt_export']
+#        sub_ele(cfg_svc_epipe_bgp_rt, 'import').text = self.data['rt_import']
 
         cfg_svc_epipe_bgpevpn = sub_ele(cfg_svc_epipe, 'bgp-evpn')
         cfg_svc_epipe_bgpevpn_localac = sub_ele(cfg_svc_epipe_bgpevpn, 'local-ac-name')
@@ -62,19 +62,19 @@ class evpnvpws_endpoint():
         cfg_svc_epipe_bgpevpn_mpls_tunnel = sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'auto-bind-tunnel')
         sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'enforce-strict-tunnel-tagging').text ='true'
         cfg_svc_epipe_bgpevpn_mpls_tunnel_resolution = sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'resolution')
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolution, 'disabled-any-filter').text ='filter'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolution, 'disabled-any-filter').text = 'disabled'
 
-        cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter = sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'resolution-filter')
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-te').text = 'true'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'bgp').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'ldp').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'mpls-fwd-policy').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'rib-api').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'rsvp').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-isis').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-ospf').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-policy').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'udp').text = 'false'
+#        cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter = sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'resolution-filter')
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-te').text = 'true'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'bgp').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'ldp').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'mpls-fwd-policy').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'rib-api').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'rsvp').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-isis').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-ospf').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-policy').text = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'udp').text = 'false'
 
         cfg_svc_epipe_sap = sub_ele(cfg_svc_epipe, 'sap')
         sub_ele(cfg_svc_epipe_sap, 'sap-id').text = self.data['sap_port'] + ":" + str(self.data['out_tag']) + "." + str(self.data['in_tag'])

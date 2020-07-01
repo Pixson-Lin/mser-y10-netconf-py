@@ -1,4 +1,4 @@
-from evpn_vpws import evpnvpws_endpoint
+from vpws import evpnvpws_endpoint
 from router import router
 from ncclient import manager
 from ncclient.xml_ import *
@@ -55,3 +55,4 @@ print(str(datetime.now().time()) + " "+ str(count) + " vpws prepared")
 create_vpws(conn1, R1_service_array)
 
 print(str(datetime.now().time()) + " "+ str(count) + " vpws deployed")
+

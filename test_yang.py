@@ -32,7 +32,7 @@ def test_nokia_yang(host, port, user_name, pass_word):
 
 
 if __name__ == '__main__':
-    host = "172.27.0.41"
+    host = "172.27.1.41"
     port = 830
     username = "netconf"
     password = "Nokia4conf"
