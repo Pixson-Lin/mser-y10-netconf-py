@@ -13,7 +13,7 @@ def create_vpws(conn, service_list):
 
 
 if __name__ == '__main__':
-    R1_ip = "172.27.0.41"
+    R1_ip = "172.27.1.41"
     R1_port = 830
     R1_username = "netconf"
     R1_password = "Nokia4conf"
