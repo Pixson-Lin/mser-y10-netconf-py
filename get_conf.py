@@ -12,11 +12,9 @@ def get_conf(host, port, username, password):
 #    filter_configure = new_ele('configure', attrs={'xmlns': ALU_CONFIG})
     filter_configure = new_ele('configure', attrs={'xmlns': "urn:nokia.com:sros:ns:yang:sr:conf"})
 
-    filter_service = sub_ele(filter_configure, 'system')
+    filter_system = sub_ele(filter_configure, 'system')
 #    sub_ele(filter_epipe, 'service-id').text = "50000"
 #    filter_epipe = sub_ele(filter_service, 'epipe')
-
-    filter_system = sub_ele(filter_configure, 'system')
 
     print(to_xml(filter_configure))
 
@@ -25,7 +23,7 @@ def get_conf(host, port, username, password):
 
 
 if __name__ == '__main__':
-    host = "172.27.0.41"
+    host = "172.27.1.41"
     port = 830
     username = "netconf"
     password = "Nokia4conf"

@@ -2,9 +2,9 @@ from ncclient.xml_ import *
 from router import router
 
 class evpnvpws_endpoint():
-    data = {}
 
-    def __init__(self, id, name, evi, rd, rt_export, rt_import, local_ac, remote_ac, in_tag, out_tag, sap_port):
+    def __init__(self, id, name, evi, rd, rt_export, rt_import, local_ac, remote_ac, route_next_hop, in_tag, out_tag, sap_port):
+        self.data = {}
         self.data['id'] = int(id)
         self.data['name'] = str(name)
         self.data['evi'] = int(evi)
@@ -13,6 +13,7 @@ class evpnvpws_endpoint():
         self.data['rt_import'] = str(rt_import)
         self.data['local_ac'] = int(local_ac)
         self.data['remote_ac'] = int(remote_ac)
+        self.data['route_next_hop'] = str(route_next_hop)
         self.data['in_tag'] = int(in_tag)
         self.data['out_tag'] = int(out_tag)
         self.data['sap_port'] = str(sap_port)
@@ -27,10 +28,8 @@ class evpnvpws_endpoint():
         sub_ele(cfg_svc_epipe, 'customer').text = '1'
 
         cfg_svc_epipe_description = sub_ele(cfg_svc_epipe, 'description')
-        str_description = 'tc-01-10 netconf epipe :' + str(self.data['id'])
+        str_description = 'TC-01-10(i) evpn vpws :' + str(self.data['id']) + ' outter: ' + str(self.data['out_tag']) + ' inner:' + str(self.data['in_tag'])
         sub_ele(cfg_svc_epipe_description, 'description-string').text = str_description
-       
-        sub_ele(cfg_svc_epipe, 'shutdown').text = 'false'
         
         cfg_svc_epipe_bgp = sub_ele(cfg_svc_epipe, 'bgp')
         cfg_svc_epipe_bgp_rd = sub_ele(cfg_svc_epipe_bgp, 'route-distinguisher')
@@ -51,32 +50,40 @@ class evpnvpws_endpoint():
         cfg_svc_epipe_bgpevpn_remoteac_ethtag = sub_ele(cfg_svc_epipe_bgpevpn_remoteac, 'eth-tag')
         sub_ele(cfg_svc_epipe_bgpevpn_remoteac_ethtag, 'tag-value').text = str(self.data['remote_ac'])
 
-        cfg_svc_epipe_bgpevpn_evi = sub_ele(cfg_svc_epipe_bgpevpn, 'evi')
-        sub_ele(cfg_svc_epipe_bgpevpn_evi, 'value').text = str(self.data['evi'])
-
         cfg_svc_epipe_bgpevpn_mpls = sub_ele(cfg_svc_epipe_bgpevpn, 'mpls')
         sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'bgp').text = '1'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'shutdown').text = 'false'
-        cfg_svc_epipe_bgpevpn_mpls_tunnel = sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'auto-bind-tunnel')
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'enforce-strict-tunnel-tagging').text ='true'
-        cfg_svc_epipe_bgpevpn_mpls_tunnel_resolution = sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'resolution')
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolution, 'disabled-any-filter').text ='filter'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'shutdown').text = 'true'
 
-        cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter = sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel, 'resolution-filter')
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-te').text = 'true'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'bgp').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'ldp').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'mpls-fwd-policy').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'rib-api').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'rsvp').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-isis').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-ospf').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'sr-policy').text = 'false'
-        sub_ele(cfg_svc_epipe_bgpevpn_mpls_tunnel_resolutionfilter, 'udp').text = 'false'
+        cfg_svc_epipe_bgpevpn_mpls_atunl = sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'auto-bind-tunnel')
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl, 'enforce-strict-tunnel-tagging').text ='false'
+
+        cfg_svc_epipe_bgpevpn_mpls_atunl_res = sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl, 'resolution')
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_res, 'disabled-any-filter').text ='filter'
+
+        cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter = sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl, 'resolution-filter')
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'bgp').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'ldp').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'mpls-fwd-policy').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'rib-api').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'rsvp').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'sr-isis').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'sr-ospf').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'sr-ospf3').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'sr-policy').text = 'true'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'sr-te').text = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_atunl_resfilter, 'udp').text = 'false'
+
+        cfg_svc_epipe_bgpevpn_mpls_rnh = sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'route-next-hop')
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_rnh, 'system-ipv4').text  = 'false'
+#        sub_ele(cfg_svc_epipe_bgpevpn_mpls_rnh, 'system-ipv6').text  = 'false'
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls_rnh, 'ip-address').text  = self.data['route_next_hop']
+        sub_ele(cfg_svc_epipe_bgpevpn_mpls, 'shutdown').text = 'false'
 
         cfg_svc_epipe_sap = sub_ele(cfg_svc_epipe, 'sap')
         sub_ele(cfg_svc_epipe_sap, 'sap-id').text = self.data['sap_port'] + ":" + str(self.data['out_tag']) + "." + str(self.data['in_tag'])
         sub_ele(cfg_svc_epipe_sap, 'shutdown').text = 'false'
+
+        sub_ele(cfg_svc_epipe, 'shutdown').text = 'false'
 
         return yang_config_root
 
@@ -93,4 +100,41 @@ class evpnvpws_endpoint():
         config += "   no epipe " + str(self.data['id']) + " \n"
 
         return config
+
+
+'''
+            description "TC-01-6(e) 30k EVPN VPWS on R3 service_id:30001 outter:101 inner:1"
+            bgp
+                route-distinguisher 3.3.3.3:30001
+                route-target export target:65001:30001 import target:65001:30001
+            exit
+            bgp-evpn
+                local-ac-name "3"
+                    eth-tag 3
+                exit
+                remote-ac-name "1"
+                    eth-tag 1
+                exit
+                mpls bgp 1
+                    auto-bind-tunnel
+                        resolution-filter
+                            sr-policy
+                        exit
+                        resolution filter
+                    exit
+                    route-next-hop 3.3.3.3
+                    no shutdown
+                exit
+            exit
+            sap lag-97:101.1 create
+                ingress
+                    qos 16
+                exit
+                egress
+                    qos 16
+                exit
+                no shutdown
+            exit
+            no shutdown
+'''
 

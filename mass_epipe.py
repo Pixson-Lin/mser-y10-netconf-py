@@ -42,7 +42,6 @@ print(str(datetime.now().time()) + " begin to prepare vpws config")
 for s_tag in range (s_tag_start, s_tag_end, 1):
     for i_tag in range(i_tag_start, i_tag_end, 1) :
         service = (s_tag - s_tag_start) * i_tag_end + i_tag + service_id_shift
-        service = (s_tag - s_tag_start) * i_tag_end + i_tag + service_id_shift
         service1_rd = str(R1.ip) + ":" + str(service)
         service1 = evpnvpws_endpoint(service, service, service, service1_rd, route_target, route_target, 1, 2, i_tag, s_tag, 'lag-1')
         R1_service_array.append(service1.to_alu_r13_xml())
