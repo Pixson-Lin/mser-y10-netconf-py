@@ -1,0 +1,130 @@
+
+
+
+R3 
+#####
+/configure service
+epipe 294000 name "VPWS-294000" customer 1 create
+description "EVPN VPWS on R3 service_id:294000 outter:1640 inner:1"
+    bgp
+        route-distinguisher 65201:294000
+        route-target export target:65201:294000 import target:65201:294000
+    exit
+    bgp-evpn
+        local-ac-name 3 eth-tag 3
+        remote-ac-name 5 eth-tag 5
+        mpls bgp 1
+            auto-bind-tunnel
+                resolution any
+            exit
+            no shutdown
+        exit
+    exit
+    sap lag-84:1640.1 create
+        ingress qos 118
+        egress qos 118
+        no shutdown
+    exit
+    no shutdown
+exit
+
+
+
+
+R5
+#####
+/configure service
+epipe 294000 name "VPWS-294000" customer 1 create
+description "EVPN VPWS on R5 service_id:294000 outter:1640 inner:1"
+    bgp
+        route-distinguisher 65202:294000
+        route-target export target:65201:294000 import target:65201:294000
+    exit
+    bgp-evpn
+        local-ac-name 5 eth-tag 5
+        remote-ac-name 3 eth-tag 3
+        mpls bgp 1
+            auto-bind-tunnel
+                resolution any
+            exit
+            no shutdown
+        exit
+    exit
+    sap lag-84:1640.1 create
+        ingress qos 118
+        egress qos 118
+        no shutdown
+    exit
+    no shutdown
+exit
+
+
+
+/configure service epipe 294000 bgp-evpn mpls shutdown 
+/configure service epipe 294000 no bgp-evpn 
+/configure service epipe 294000 sap lag-84:1640.1 shutdown 
+/configure service epipe 294000 no sap lag-84:1640.1
+/configure service epipe 294000 shutdown 
+/configure service no epipe 294000 
+
+
+
+###############################################################################################################################
+local epipe
+R5 中容量 追加1路 epipe
+
+/configure service
+  epipe 316001 name "epipe_316001" customer 1 create
+    description "service_scale_local_epipe: 316001 outter_tag:1004 inner_tag:4001"
+    sap lag-301:1004.4001 create
+      ingress qos 118
+      no shutdown
+    exit
+    sap lag-702:1004.4001 create
+      ingress qos 118
+      no shutdown
+    exit
+    no shutdown
+  exit
+
+
+
+/configure service
+  epipe 316001
+    sap lag-301:1004.4001 shutdown
+    no sap lag-301:1004.4001
+    sap lag-702:1004.4001 shutdown
+    no sap lag-702:1004.4001
+  shutdown
+  exit
+  no epipe 316001
+
+##############################################################################################################################
+local epipe
+R3 高容量 追加1路 epipe
+
+/configure service
+  epipe 363001 name "epipe_363001" customer 1 create
+    description "service_scale_local_epipe: 363001 outter_tag:1016 inner_tag:3001"
+    sap lag-81:1016.3001 create
+      ingress qos 118
+      no shutdown
+    exit
+    sap lag-82:1016.3001 create
+      ingress qos 118
+      no shutdown
+    exit
+    no shutdown
+  exit
+
+
+/configure service
+  epipe 363001
+    sap lag-81:1016.3001 shutdown
+    no sap lag-81:1016.3001
+    sap lag-82:1016.3001 shutdown
+    no sap lag-82:1016.3001
+  shutdown
+  exit
+  no epipe 316001
+  

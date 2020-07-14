@@ -57,7 +57,8 @@ for service in range (service_start, service_end, 1):
     service_R1_p_str += "        remote-ac-name \"3\"" + "\n"
     service_R1_p_str += "            eth-tag 3" + "\n"
     service_R1_p_str += "        exit" + "\n"
-    service_R1_p_str += "        evi " + str(service + evi_start) + "\n"
+###  cancel usage of evi  
+#    service_R1_p_str += "        evi " + str(service + evi_start) + "\n"
     service_R1_p_str += "        mpls bgp 1" + "\n"
     service_R1_p_str += "            auto-bind-tunnel" + "\n"
     service_R1_p_str += "                resolution-filter" + "\n"
@@ -102,7 +103,8 @@ for service in range (service_start, service_end, 1):
     service_R3_p_str += "        remote-ac-name \"1\"" + "\n"
     service_R3_p_str += "            eth-tag 1" + "\n"
     service_R3_p_str += "        exit" + "\n"
-    service_R3_p_str += "        evi " + str(service + evi_start) + "\n"
+###  cancel usage of evi  
+#    service_R3_p_str += "        evi " + str(service + evi_start) + "\n"
     service_R3_p_str += "        mpls bgp 1" + "\n"
     service_R3_p_str += "            auto-bind-tunnel" + "\n"
     service_R3_p_str += "                resolution-filter" + "\n"
